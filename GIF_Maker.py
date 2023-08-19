@@ -1,20 +1,14 @@
-import os, sys
+import os, argparse
 from PIL import Image, ImageOps
-qual, dur, name, path, images=100, 200, 'final_GIF.gif', './', []
-for arg in sys.argv[1:] :
-    if(arg.startswith('-h')) :
-        print("GIF_Maker.py -q[Quality (float)%] -d[Duration] -n[Name]\nExamples :\n\tGIF_Maker.py -q33.33\n\tGIF_Maker.py -d300 -nHurrah.gif\n")
-        print("Use:\n\tPut all the images in a folder. Put the script in the same folder.")
-        sys.exit("Warning : Do NOT rename the script")
-    if(arg.startswith('-q')) :
-        qual=float(arg[2:].strip())
-    if(arg.startswith('-n')) :
-        name=arg[2:].strip()
-    if(arg.startswith('-d')) :
-        dur=int(arg[2:].strip())
-    # if(arg.startswith('-f')) :
-    #     path=arg[2:].strip()
-    
+parser = argparse.ArgumentParser(
+                    prog='GIF Maker',
+                    description='To make a gif file with images',
+                    epilog='Use:\n\tPut all the images in a folder. Put the script in the same folder.\nWarning : Do NOT rename the script')
+parser.add_argument('-o', '--output_file', help='Name of the final GIF file',default='final_GIF.gif')
+parser.add_argument('-d', '--duration', help='Total runtime of the final output',default=200)
+parser.add_argument('-q', '--quality', help='The quality of final output (0-100)',default=100)
+args = parser.parse_args()
+qual, dur, name ,path, images= int(args.quality) , int(args.duration), args.output_file, './', []
 imageNames = os.listdir(path)
 for imageName in imageNames :
     if(imageName !='GIF_Maker.py' and  not imageName.endswith('.gif')):
